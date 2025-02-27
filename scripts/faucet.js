@@ -203,6 +203,10 @@ async function handleFaucet(wallet, proxy, proxyIP) {
       return false;
     }
   } catch (error) {
+    if (error.status > 500) {
+      console.log(`Server Error: ${error.response?.data?.message || error.message}`.red);
+      return;
+    }
     console.log(`Error performing Faucet: ${error.response?.data?.message || error.message}`.red);
     return false;
   }
@@ -225,6 +229,7 @@ async function run() {
   const localStorage = require("../localStorage.json");
 
   for (let i = 0; i < privateKeys.length; i++) {
+    const pvk = privateKeys[i].startsWith("0x") ? privateKeys[i] : `0x${privateKeys[i]}`;
     const proxyIP = await checkProxyIP(proxyList[i]);
     if (!proxyIP) {
       console.log(`Proxy ${proxyList[i]} is not valid. Skipping faucet ${wallet} request.`.red);
@@ -237,19 +242,21 @@ async function run() {
         "Proxy-Authorization": `Basic ${Buffer.from(proxyList[i].split("@")[0]).toString("base64")}`,
       },
     });
-    const wallet = new ethers.Wallet(privateKeys[i], provider);
-    const address = await wallet.getAddress();
-    const balance = await provider.getBalance(wallet.address);
+    const wallet = new ethers.Wallet(pvk, provider);
+    const address = wallet.address;
+    const balance = await provider.getBalance(address);
     const balanceInEther = ethers.utils.formatEther(balance);
     console.log(`[${i + 1}/${privateKeys.length}] Address: ${address} | Balance: ${balanceInEther} | IP: ${proxyIP}`);
 
     try {
-      const lastCheckIn = localStorage[address]?.lastFaucet;
-      if (!isToday(lastCheckIn) || !lastCheckIn) {
+      const lastFaucet = localStorage[address]?.lastFaucet;
+      if (!isToday(lastFaucet) || !lastFaucet) {
         console.log("Starting faucet monad...".blue);
         await handleFaucet(address, proxyList[i], proxyIP);
       } else {
-        console.log("You faucet already today...".yellow);
+        const initialDate = new Date(lastFaucet);
+        const newDate = new Date(initialDate.getTime() + 12 * 60 * 60 * 1000);
+        console.log(`You faucet already today | Latest faucet: ${initialDate.toLocaleString()} | Next faucet: ${newDate.toLocaleString()}`.yellow);
       }
     } catch (error) {
       console.error(`❌ [${wallet}] Failed to claim faucet.`);
@@ -257,7 +264,6 @@ async function run() {
       continue;
     }
   }
-
   console.log("All transactions completed.");
   process.exit(0);
 }
@@ -268,7 +274,7 @@ const isToday = (checkInDate) => {
 
   // Set the time of both dates to midnight (00:00:00) for comparison
   const hoursDiff = (now - checkIn) / (1000 * 60 * 60);
-  return hoursDiff >= 12; // Returns true if checked in today
+  return hoursDiff <= 12; // Returns true if checked in today
 };
 
 module.exports = {

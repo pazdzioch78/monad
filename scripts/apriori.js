@@ -12,7 +12,7 @@ const contractAddress = "0xb2f82D0f38dc453D596Ad40A37799446Cc89274A";
 const gasLimitStake = 500000;
 const gasLimitUnstake = 800000;
 const gasLimitClaim = 800000;
-
+let provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 const minimalABI = ["function getPendingUnstakeRequests(address) view returns (uint256[] memory)"];
 
 async function getRandomAmount(wallet) {
@@ -211,7 +211,7 @@ async function processAccount(privateKey, cycleCount, proxy) {
     if (!privateKey.startsWith("0x")) {
       privateKey = "0x" + privateKey;
     }
-    const provider = new ethers.providers.JsonRpcProvider({
+    provider = new ethers.providers.JsonRpcProvider({
       url: RPC_URL,
       headers: {
         "Proxy-Authorization": `Basic ${Buffer.from(proxy.split("@")[0]).toString("base64")}`,

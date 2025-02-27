@@ -51,7 +51,7 @@ async function wrapMON(amount, contract) {
     await tx.wait();
     return true;
   } catch (error) {
-    console.error("❌ Error occurred:".red, error);
+    console.error("❌ Error occurred:".red, error.message);
     return false;
   }
 }
@@ -65,7 +65,7 @@ async function unwrapMON(amount, contract) {
     await tx.wait();
     return true;
   } catch (error) {
-    console.error("❌ Error occurred:".red, error);
+    console.error("❌ Error occurred:".red, error.message);
     return false;
   }
 }

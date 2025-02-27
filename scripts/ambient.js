@@ -36,20 +36,6 @@ const ERC20_ABI = [
   "function symbol() view returns (string)",
   "function totalSupply() view returns (uint256)",
 ];
-function readPrivateKeys() {
-  try {
-    const data = fs.readFileSync(WALLET_FILE, "utf8");
-    const privateKeys = data
-      .split("\n")
-      .map((key) => key.trim())
-      .filter((key) => key !== "");
-
-    return privateKeys;
-  } catch (error) {
-    console.error(`❌ Unable to read privateKeys.txt: ${error.message}`.red);
-    process.exit(1);
-  }
-}
 
 function roundAmount(amount, tokenDecimals) {
   try {
@@ -480,7 +466,7 @@ async function retryWithDifferentPair(wallet, excludeToken) {
   }
 }
 
-async function runSwapCyclesForAccount(privateKey, cycles) {
+async function runSwapCyclesForAccount(privateKey, cycles, proxy) {
   try {
     if (!privateKey.startsWith("0x")) {
       privateKey = "0x" + privateKey;
@@ -527,7 +513,8 @@ async function runSwapCyclesForAccount(privateKey, cycles) {
 
 async function processAllAccounts(cycles, interval) {
   try {
-    const privateKeys = readPrivateKeys();
+    const privateKeys = loadData("privateKeys.txt");
+    const proxy = loadData("proxy.txt");
     console.log(`📋 Found ${privateKeys.length} accounts in privateKeys.txt`.cyan);
 
     for (let i = 0; i < privateKeys.length; i++) {
@@ -537,7 +524,7 @@ async function processAllAccounts(cycles, interval) {
         continue;
       }
       console.log(`\n🔄 Processing account ${i + 1} of ${privateKeys.length} | IP: ${proxyIP}`.cyan);
-      const success = await runSwapCyclesForAccount(privateKeys[i], cycles);
+      const success = await runSwapCyclesForAccount(privateKeys[i], cycles, proxy[i]);
 
       if (!success) {
         console.log(`⚠️ Unable to process account ${i + 1}, moving to the next account`.yellow);

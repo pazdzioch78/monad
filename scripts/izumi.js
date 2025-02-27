@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 const colors = require("colors");
 const readline = require("readline");
 const fs = require("fs");
-const { loadData } = require("../utils");
+const { loadData, checkProxyIP } = require("../utils");
 const { config } = require("../config");
 
 const RPC_URL = "https://testnet-rpc.monad.xyz/";

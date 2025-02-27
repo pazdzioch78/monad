@@ -7,7 +7,6 @@ const { config } = require("../config");
 
 const RPC_URL = "https://testnet-rpc.monad.xyz/";
 const EXPLORER_URL = "https://testnet.monadexplorer.com/tx/";
-const WALLET_FILE = "privateKeys.txt";
 const ACCOUNT_SWITCH_DELAY = 3000;
 let provider = new ethers.providers.JsonRpcProvider(RPC_URL);
 

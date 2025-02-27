@@ -6,19 +6,19 @@ const availableScripts = [
   { title: "2.Send Fee To Mutiple Wallet", value: "send" },
   { title: "3.Faucet Monad", value: "faucet" },
 
-  { title: "4.Monorail (swap)", value: "mono" },
-  { title: "5.Ambient (swap)", value: "ambient" },
-  { title: "6.Bebop (Swap)", value: "bebop" },
-  { title: "7.Uniswap (Swap)", value: "uni" },
-  { title: "8.Rubics (Swap)", value: "rubic" },
-  { title: "9.Izumi (Swap)", value: "izumi" },
-  { title: "10.Beanswap (Swap)", value: "beanswap" },
+  { title: "4.Monorail (swap | Auto)", value: "mono" },
+  { title: "5.Ambient (swap | Auto)", value: "ambient" },
+  { title: "6.Bebop (Swap | Auto)", value: "bebop" },
+  { title: "7.Uniswap (Swap | Auto)", value: "uniswap" },
+  { title: "8.Rubics (Swap | Auto)", value: "rubic" },
+  { title: "9.Izumi (Swap | Auto)", value: "izumi" },
+  { title: "10.Beanswap (Swap | Auto)", value: "beanswap" },
 
-  { title: "11.Magma Staking (Stake)", value: "magma" },
-  { title: "12.Apriori Staking (Stake)", value: "apriori" },
-  { title: "13.Kintsu Staking (Stake)", value: "kintsu" },
+  { title: "11.Magma Staking (Stake | Auto)", value: "magma" },
+  { title: "12.Apriori Staking (Stake | Auto)", value: "apriori" },
+  { title: "13.Kintsu Staking (Stake | Auto)", value: "kintsu" },
 
-  { title: "14.Run automation all options", value: "all" },
+  { title: "14.Run All Options Auto", value: "all" },
   { title: "Exit", value: "exit" },
 ];
 
@@ -70,7 +70,7 @@ async function runScript(scriptName, automated = false) {
         console.log("Run Monorail...");
         scriptModule = require("./scripts/mono");
         break;
-      case "uni":
+      case "uniswap":
         console.log("Run Uniswap (Swap)...");
         scriptModule = require("./scripts/uniswap");
         break;
@@ -118,8 +118,7 @@ async function runScript(scriptName, automated = false) {
 }
 
 async function runAllScriptsSequentially() {
-  const scriptOrder = ["rubic", "izumi", "beanswap", "magma", "apriori", "monorail", "kintsu", "uniswap", "bebop"];
-
+  const scriptOrder = ["rubic", "magma", "izumi", "apriori", "beanswap", "ambient", "kintsu", "mono", "uniswap", "bebop"];
   console.log("-".repeat(60));
   console.log("Automatically run all scripts...".blue);
   console.log("-".repeat(60));
@@ -160,6 +159,7 @@ async function runAllScriptsSequentially() {
 
   console.log("-".repeat(60));
   console.log("Completed all wallets".green);
+  console.log(`Tool được phát triển bởi nhóm tele Airdrop Hunter Siêu Tốc (https://t.me/airdrophuntersieutoc)`.yellow);
   console.log("-".repeat(60));
 }
 
@@ -190,7 +190,7 @@ async function run() {
 }
 
 run().catch((error) => {
-  console.error("Error occurred:", error);
+  console.error("Error occurred:", error.message);
 });
 
-// module.exports = { runScript, runAllScriptsSequentially };
+module.exports = { runScript, runAllScriptsSequentially };

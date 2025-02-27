@@ -8,7 +8,7 @@ const { loadData, checkProxyIP } = require("../utils");
 const RPC_URL = "https://testnet-rpc.monad.xyz/";
 const EXPLORER_URL = "https://testnet.monadexplorer.com/tx/";
 let provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-const RPC_URLS = ["https://testnet-rpc.monad.xyz", "https://testnet-rpc.monorail.xyz", "https://monad-testnet.drpc.org"];
+const RPC_URLS = ["https://testnet-rpc.monad.xyz"];
 
 const CHAIN_ID = 10143;
 const UNISWAP_V2_ROUTER_ADDRESS = "0xCa810D095e90Daae6e867c19DF6D9A8C56db2c89";

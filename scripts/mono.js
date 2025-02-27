@@ -437,18 +437,14 @@ async function runSwapCyclesForAccount(privateKey, cycles, proxy) {
     }
 
     let provider = null;
-    await withRetry(async () => {
-      provider = new ethers.providers.JsonRpcProvider({
-        url: RPC_URL,
-        headers: {
-          "Proxy-Authorization": `Basic ${Buffer.from(proxy.split("@")[0]).toString("base64")}`,
-        },
-      });
-      await provider.getNetwork();
-    }, "Connecting to RPC provider");
+    provider = new ethers.providers.JsonRpcProvider({
+      url: RPC_URL,
+      headers: {
+        "Proxy-Authorization": `Basic ${Buffer.from(proxy.split("@")[0]).toString("base64")}`,
+      },
+    });
 
     const wallet = new ethers.Wallet(privateKey, provider);
-
     const address = wallet.address;
     const truncatedAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
     console.log(`\n👤 Processing account: ${truncatedAddress}`.cyan);
