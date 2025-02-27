@@ -2,10 +2,6 @@
 
 Tool được phát triển bởi nhóm tele Airdrop Hunter Siêu Tốc (https://t.me/airdrophuntersieutoc)
 
-This repository contains a collection of Python scripts designed to automate various tasks on the Monad Testnet, including staking, swapping, deploying contracts, and sending transactions. The scripts are integrated with a central `main.js` file for easy navigation and execution, supporting multiple private keys and a user-friendly CLI interface.
-
-## Features Overview
-
 ### General Features
 
 ✔️ Auto Deploy Contract
