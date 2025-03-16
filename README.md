@@ -1,4 +1,4 @@
-# Monad Testnet Automation Scripts
+# Monad Testnet Auto Scripts
 
 Tool được phát triển bởi nhóm tele Airdrop Hunter Siêu Tốc (https://t.me/airdrophuntersieutoc)
 
